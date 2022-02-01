@@ -1,21 +1,41 @@
 name: Actions Workflow
 
 on:
+  push:
+    branches:
+      - master
+      - 'feature/*'  # Matches feature feature/Abc but not feature/a/b
+      - 'feature/**'  # Matches any string
+      - '!feature/featC'   # Ignores this branch
+    # branches-ignore:   # Can't have branches and branches-ignore at the same time
+    #   - 'sid-test'
+    tags:
+      - v1.*
+    paths:
+      - '**.py'
+      - '!filename.py'
+    # paths-ignore:
+    #   - 'docs/**'   # Cannot use paths and paths ignore
+    pull_request:
+      - master
   # Can use Postman POST requests to trigger workflow
-  repository_dispatch:
-    types: [build]
+  # repository_dispatch:
+  #   types: [build]
   # schedule:
   # You can use crontab guru website to figure this code
     # - cron: "0 12 1 JAN *"
     # - cron: "0 12 16 FEB *"
   # push:
-  pull_request:
-    types: [closed, assigned, opened, reopened]
+  # pull_request:
+  #   types: [closed, assigned, opened, reopened]
 
 jobs:
   run-github-actions:
     runs-on: ubuntu-latest
     steps:
+      # This can be used with Postman to trigger a workflow in only Prod/Test etc
+      - name: payload
+        run: echo ${{ github.event.client_payload.env }}
       - name: List Files
         run: |
           pwd
