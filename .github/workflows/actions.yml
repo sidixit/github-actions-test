@@ -1,7 +1,14 @@
 name: Actions Workflow
 
 on:
-  push:
+  # Can use Postman POST requests to trigger workflow
+  repository_dispatch:
+    types: [build]
+  # schedule:
+  # You can use crontab guru website to figure this code
+    # - cron: "0 12 1 JAN *"
+    # - cron: "0 12 16 FEB *"
+  # push:
   pull_request:
     types: [closed, assigned, opened, reopened]
 
